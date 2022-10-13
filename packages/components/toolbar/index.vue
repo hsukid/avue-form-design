@@ -6,57 +6,54 @@
         :icon="RefreshLeft"
         :disabled="historySteps.index == 0"
         @click="$emit('undo')"
-      >撤销</el-button>
+        >撤销</el-button
+      >
       <el-button
         type="text"
         :icon="RefreshRight"
         :disabled="historySteps.index == historySteps.steps.length - 1"
         @click="$emit('redo')"
-      >重做</el-button>
+        >重做</el-button
+      >
     </div>
-    <div style="display: flex; align-items: center;">
-      <iframe
-        src="https://ghbtns.com/github-btn.html?user=sscfaith&repo=avue-form-design&type=star&count=true"
-        frameborder="0"
-        scrolling="0"
-        width="100"
-        height="20"
-        title="GitHub"
-        style="margin-left: 10px;"
-        v-if="showGithubStar"
-      ></iframe>
+    <div style="display: flex; align-items: center">
       <slot name="toolbar-left"></slot>
       <el-button
         v-if="toolbar.includes('avue-doc')"
         type="text"
         :icon="Document"
         @click="handleAvueDoc"
-      >Avue文档</el-button>
+        >Avue文档</el-button
+      >
       <el-button
         v-if="toolbar.includes('import')"
         type="text"
         :icon="Upload"
         @click="$emit('import')"
-      >导入JSON</el-button>
+        >导入JSON</el-button
+      >
       <el-button
         v-if="toolbar.includes('generate')"
         type="text"
         :icon="Download"
         @click="$emit('generate')"
-      >生成JSON</el-button>
+        >生成JSON</el-button
+      >
       <el-button
         v-if="toolbar.includes('preview')"
         type="text"
         :icon="View"
         @click="$emit('preview')"
-      >预览</el-button>
+        >预览</el-button
+      >
       <el-button
         v-if="toolbar.includes('clear')"
         class="danger"
         type="text"
         :icon="Delete"
         @click="$emit('clear')"
-      >清空</el-button>
+        >清空</el-button
+      >
       <slot name="toolbar"></slot>
     </div>
   </el-header>
@@ -64,19 +61,25 @@
 
 <script setup>
 // Icon
-import { RefreshLeft, RefreshRight, Document, Upload, Download, View, Delete } from '@element-plus/icons-vue'
+import {
+  RefreshLeft,
+  RefreshRight,
+  Document,
+  Upload,
+  Download,
+  View,
+  Delete
+} from '@element-plus/icons-vue'
 
 // Props
 defineProps({
-  showGithubStar: {
+  undoRedo: {
+    // 撤销重做
     type: Boolean,
     default: true
   },
-  undoRedo: { // 撤销重做
-    type: Boolean,
-    default: true
-  },
-  toolbar: { // 工具栏按钮
+  toolbar: {
+    // 工具栏按钮
     type: Array,
     default: () => {
       return ['import', 'generate', 'preview', 'clear']
@@ -97,7 +100,8 @@ defineProps({
 
 defineEmits(['undo', 'redo', 'import', 'generate', 'preview', 'clear'])
 
-const handleAvueDoc = () => { // Avue文档链接
+const handleAvueDoc = () => {
+  // Avue文档链接
   window.open('https://avuejs.com/form/form.html', '_blank')
 }
 </script>

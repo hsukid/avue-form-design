@@ -14,7 +14,6 @@
         <afd-toolbar
           :toolbar="toolbar"
           :undo-redo="undoRedo"
-          :show-github-star="showGithubStar"
           :history-steps="historySteps"
           @undo="widget.option = handleUndo()"
           @redo="widget.option = handleRedo()"
@@ -42,7 +41,10 @@
     </el-container>
 
     <!-- 导入JSON弹窗 -->
-    <afd-import-drawer ref="importDrawer" @submit="handleImportJson"></afd-import-drawer>
+    <afd-import-drawer
+      ref="importDrawer"
+      @submit="handleImportJson"
+    ></afd-import-drawer>
     <!-- 生成JSON弹窗 -->
     <afd-generate-drawer ref="generateDrawer"></afd-generate-drawer>
     <!-- 预览弹窗 -->
@@ -61,12 +63,20 @@ import AfdImportDrawer from './components/widget/drawer/import.vue' // 导入弹
 import AfdGenerateDrawer from './components/widget/drawer/generate.vue' // 生成弹窗
 import AfdPreviewDrawer from './components/widget/drawer/preview.vue' // 预览弹窗
 
-import useTransform from "./composables/use-transform" // json转换
-import useHistory from "./composables/use-history" // 历史记录
+import useTransform from './composables/use-transform' // json转换
+import useHistory from './composables/use-history' // 历史记录
 
 export default {
   name: 'avue-form-design',
-  components: { AfdField, AfdToolbar, AfdWidget, AfdConfig, AfdImportDrawer, AfdGenerateDrawer, AfdPreviewDrawer },
+  components: {
+    AfdField,
+    AfdToolbar,
+    AfdWidget,
+    AfdConfig,
+    AfdImportDrawer,
+    AfdGenerateDrawer,
+    AfdPreviewDrawer
+  },
   props: {
     options: {
       type: [Object, String],
@@ -88,10 +98,6 @@ export default {
       type: [String, Number],
       default: '380px'
     },
-    showGithubStar: {
-      type: Boolean,
-      default: true
-    },
     toolbar: {
       type: Array,
       default: () => {
@@ -103,14 +109,14 @@ export default {
       default: true
     },
     includeFields: {
-      type: Array,
+      type: Array
     },
     customFields: {
-      type: Array,
+      type: Array
     },
     defaultValues: {
       type: Object
-    },
+    }
   },
   watch: {
     options: {
@@ -122,8 +128,15 @@ export default {
     }
   },
   setup() {
-    const { historySteps, initHistory, handleHistoryChange, handleUndo, handleRedo } = useHistory()
-    const { transformToAvueOptions, transAvueOptionsToFormDesigner } = useTransform()
+    const {
+      historySteps,
+      initHistory,
+      handleHistoryChange,
+      handleUndo,
+      handleRedo
+    } = useHistory()
+    const { transformToAvueOptions, transAvueOptionsToFormDesigner } =
+      useTransform()
     return {
       historySteps,
       initHistory,
@@ -131,7 +144,7 @@ export default {
       handleUndo,
       handleRedo,
       transformToAvueOptions,
-      transAvueOptionsToFormDesigner,
+      transAvueOptionsToFormDesigner
     }
   },
   computed: {
@@ -170,7 +183,7 @@ export default {
           menuPosition: 'center'
         },
         select: {}
-      },
+      }
     }
   },
   methods: {
@@ -181,7 +194,10 @@ export default {
         option = eval('(' + option + ')')
       }
       if (!option.column) option.column = []
-      this.transAvueOptionsToFormDesigner({ ...this.widget.option, ...option }).then(res => {
+      this.transAvueOptionsToFormDesigner({
+        ...this.widget.option,
+        ...option
+      }).then((res) => {
         this.widget.option = this.initHistory({
           index: 0,
           maxStep: 20,
@@ -193,22 +209,36 @@ export default {
     // 绑定键盘事件
     handleBindKeyBoard() {
       if (this.undoRedo) {
-        window.addEventListener('keydown', (evt) => {
-          // 监听 cmd + z / ctrl + z 撤销
-          if ((evt.metaKey && !evt.shiftKey && evt.keyCode == 90) || (evt.ctrlKey && !evt.shiftKey && evt.keyCode == 90)) {
-            this.widget.option = this.handleUndo()
-          }
+        window.addEventListener(
+          'keydown',
+          (evt) => {
+            // 监听 cmd + z / ctrl + z 撤销
+            if (
+              (evt.metaKey && !evt.shiftKey && evt.keyCode == 90) ||
+              (evt.ctrlKey && !evt.shiftKey && evt.keyCode == 90)
+            ) {
+              this.widget.option = this.handleUndo()
+            }
 
-          // 监听 cmd + shift + z / ctrl + shift + z / ctrl + y 重做
-          if ((evt.metaKey && evt.shiftKey && evt.keyCode == 90) || (evt.ctrlKey && evt.shiftKey && evt.keyCode == 90) || (evt.ctrlKey && evt.keyCode == 89)) {
-            this.widget.option = this.handleRedo()
-          }
-        }, false)
+            // 监听 cmd + shift + z / ctrl + shift + z / ctrl + y 重做
+            if (
+              (evt.metaKey && evt.shiftKey && evt.keyCode == 90) ||
+              (evt.ctrlKey && evt.shiftKey && evt.keyCode == 90) ||
+              (evt.ctrlKey && evt.keyCode == 89)
+            ) {
+              this.widget.option = this.handleRedo()
+            }
+          },
+          false
+        )
       }
     },
     // 左侧字段点击
     handleFieldClick(item) {
-      const activeIndex = this.widget.option.column.findIndex(c => c.prop == this.widget.select.prop) + 1
+      const activeIndex =
+        this.widget.option.column.findIndex(
+          (c) => c.prop == this.widget.select.prop
+        ) + 1
       let newIndex = 0
       if (activeIndex == -1) {
         this.widget.option.column.push(item)
@@ -224,7 +254,7 @@ export default {
     handleImportJson(json, done) {
       if (!json) return
       try {
-        this.transAvueOptionsToFormDesigner(json).then(data => {
+        this.transAvueOptionsToFormDesigner(json).then((data) => {
           this.widget.option = data
           this.handleHistoryChange(data)
           done()
@@ -235,33 +265,39 @@ export default {
     },
     // 生成JSON
     handleGenerateJson() {
-      this.transformToAvueOptions(this.widget.option).then(data => {
+      this.transformToAvueOptions(this.widget.option).then((data) => {
         this.$refs.generateDrawer.show(data)
       })
     },
     // 预览
     handlePreview() {
-      if (!this.widget.option.column || this.widget.option.column.length == 0) this.$message.error("没有需要展示的内容")
+      if (!this.widget.option.column || this.widget.option.column.length == 0)
+        this.$message.error('没有需要展示的内容')
       else this.$refs.previewDrawer.show(this.widget.option)
     },
     // 清空
     handleClear() {
-      if (this.widget.option && this.widget.option.column && this.widget.option.column.length > 0) {
+      if (
+        this.widget.option &&
+        this.widget.option.column &&
+        this.widget.option.column.length > 0
+      ) {
         this.$confirm('确定要清空吗？', '警告', {
           type: 'warning'
-        }).then(() => {
-          this.widget.option.column = []
-          this.form = {}
-          this.widget.select = {}
-          this.handleHistoryChange(this.widget.option)
-        }).catch(() => {
         })
-      } else this.$message.error("没有需要清空的内容")
-    },
+          .then(() => {
+            this.widget.option.column = []
+            this.form = {}
+            this.widget.select = {}
+            this.handleHistoryChange(this.widget.option)
+          })
+          .catch(() => {})
+      } else this.$message.error('没有需要清空的内容')
+    }
   }
 }
 </script>
 
 <style lang="scss">
-@import "./styles/index.scss";
+@import './styles/index.scss';
 </style>
