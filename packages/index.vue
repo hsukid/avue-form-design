@@ -5,23 +5,30 @@
       <el-aside :width="leftWidth">
         <div class="fields-list">
           <template v-if="customFields && customFields.length > 0">
-            <template v-if="customFields[0].title && customFields[0].list && customFields[0].list.length > 0">
+            <template
+              v-if="
+                customFields[0].title &&
+                customFields[0].list &&
+                customFields[0].list.length > 0
+              "
+            >
               <template v-for="(field, index) in customFields">
-                <div class="field-title"
-                     :key="'f_' + index">{{field.title}}</div>
-                <draggable tag="ul"
-                           :list="field.list"
-                           :group="{ name: 'form', pull: 'clone', put: false }"
-                           ghost-class="ghost"
-                           :sort="false"
-                           :key="'d_' + index">
+                <div class="field-title" :key="'f_' + index">
+                  {{ field.title }}
+                </div>
+                <draggable
+                  tag="ul"
+                  :list="field.list"
+                  :group="{ name: 'form', pull: 'clone', put: false }"
+                  ghost-class="ghost"
+                  :sort="false"
+                  :key="'d_' + index"
+                >
                   <template v-for="(item, cIndex) in field.list">
-                    <li class="field-label"
-                        :key="'c_' + cIndex">
+                    <li class="field-label" :key="'c_' + cIndex">
                       <a @click="handleFieldClick(item)">
-                        <i class="icon iconfont"
-                           :class="item.icon"></i>
-                        <span>{{item.title || item.label}}</span>
+                        <i class="icon iconfont" :class="item.icon"></i>
+                        <span>{{ item.title || item.label }}</span>
                       </a>
                     </li>
                   </template>
@@ -29,59 +36,69 @@
               </template>
             </template>
             <template v-else>
-              <el-link class="field-title"
-                       :underline="false"
-                       href="https://github.com/sscfaith/avue-form-design/blob/master/CHANGELOG.md#2020-09-22"
-                       target="_blank">自定义字段 <i class="el-icon-question"></i></el-link>
-              <draggable tag="ul"
-                         :list="customFields"
-                         :group="{ name: 'form', pull: 'clone', put: false }"
-                         ghost-class="ghost"
-                         :sort="false">
+              <el-link
+                class="field-title"
+                :underline="false"
+                href="https://github.com/sscfaith/avue-form-design/blob/master/CHANGELOG.md#2020-09-22"
+                target="_blank"
+                >自定义字段 <i class="el-icon-question"></i
+              ></el-link>
+              <draggable
+                tag="ul"
+                :list="customFields"
+                :group="{ name: 'form', pull: 'clone', put: false }"
+                ghost-class="ghost"
+                :sort="false"
+              >
                 <template v-for="(item, index) in customFields">
-                  <el-tooltip v-if="item.tips"
-                              effect="dark"
-                              :content="item.tips"
-                              :key="index">
-                    <li class="field-label"
-                        :key="index">
-                      <a style="padding: 0 5px;"
-                         @click="handleFieldClick(item)">
+                  <el-tooltip
+                    v-if="item.tips"
+                    effect="dark"
+                    :content="item.tips"
+                    :key="index"
+                  >
+                    <li class="field-label" :key="index">
+                      <a style="padding: 0 5px" @click="handleFieldClick(item)">
                         <i :class="item.icon"></i>
-                        <span style="margin-left: 5px;">{{item.title || item.label}}</span>
+                        <span style="margin-left: 5px">{{
+                          item.title || item.label
+                        }}</span>
                       </a>
                     </li>
                   </el-tooltip>
-                  <li v-else
-                      class="field-label"
-                      :key="index">
-                    <a style="padding: 0 5px;"
-                       @click="handleFieldClick(item)">
+                  <li v-else class="field-label" :key="index">
+                    <a style="padding: 0 5px" @click="handleFieldClick(item)">
                       <i :class="item.icon"></i>
-                      <span style="margin-left: 5px;">{{item.title || item.label}}</span>
+                      <span style="margin-left: 5px">{{
+                        item.title || item.label
+                      }}</span>
                     </a>
                   </li>
                 </template>
               </draggable>
             </template>
           </template>
-          <div v-for="(field, index) in fields"
-               :key="index">
-            <template v-if="field.list.find(f => includeFields.includes(f.type))">
-              <div class="field-title">{{field.title}}</div>
-              <draggable tag="ul"
-                         :list="field.list"
-                         :group="{ name: 'form', pull: 'clone', put: false }"
-                         ghost-class="ghost"
-                         :sort="false">
+          <div v-for="(field, index) in fields" :key="index">
+            <template
+              v-if="field.list.find((f) => includeFields.includes(f.type))"
+            >
+              <div class="field-title">{{ field.title }}</div>
+              <draggable
+                tag="ul"
+                :list="field.list"
+                :group="{ name: 'form', pull: 'clone', put: false }"
+                ghost-class="ghost"
+                :sort="false"
+              >
                 <template v-for="(item, cIndex) in field.list">
-                  <li class="field-label"
-                      v-if="includeFields.includes(item.type)"
-                      :key="'c_' + cIndex">
+                  <li
+                    class="field-label"
+                    v-if="includeFields.includes(item.type)"
+                    :key="'c_' + cIndex"
+                  >
                     <a @click="handleFieldClick(item)">
-                      <i class="icon iconfont"
-                         :class="item.icon"></i>
-                      <span>{{item.title || item.label}}</span>
+                      <i class="icon iconfont" :class="item.icon"></i>
+                      <span>{{ item.title || item.label }}</span>
                     </a>
                   </li>
                 </template>
@@ -91,196 +108,291 @@
         </div>
       </el-aside>
       <!-- 中间主布局 -->
-      <el-container class="widget-container"
-                    direction="vertical">
+      <el-container class="widget-container" direction="vertical">
         <el-header class="widget-container-header">
           <div>
             <template v-if="undoRedo">
-              <el-button type="text"
-                         size="medium"
-                         icon="el-icon-refresh-left"
-                         :disabled="historySteps.index == 0"
-                         @click="widgetForm = handleUndo()">撤销</el-button>
-              <el-button type="text"
-                         size="medium"
-                         icon="el-icon-refresh-right"
-                         :disabled="historySteps.index == historySteps.steps.length - 1"
-                         @click="widgetForm = handleRedo()">重做</el-button>
+              <el-tooltip
+                class="item"
+                effect="dark"
+                content="撤销"
+                placement="top-start"
+              >
+                <el-button
+                  type="warning"
+                  size="mini"
+                  icon="el-icon-refresh-left"
+                  :disabled="historySteps.index == 0"
+                  @click="widgetForm = handleUndo()"
+                  circle
+                />
+              </el-tooltip>
+
+              <el-tooltip
+                class="item"
+                effect="dark"
+                content="重做"
+                placement="top-start"
+              >
+                <el-button
+                  type="primary"
+                  size="mini"
+                  icon="el-icon-refresh-right"
+                  :disabled="
+                    historySteps.index == historySteps.steps.length - 1
+                  "
+                  @click="widgetForm = handleRedo()"
+                  circle
+                />
+              </el-tooltip>
+
+              <el-tooltip
+                v-if="toolbar.includes('clear')"
+                class="item"
+                effect="dark"
+                content="清空"
+                placement="top-start"
+              >
+                <el-button
+                  type="danger"
+                  size="mini"
+                  icon="el-icon-delete"
+                  @click="handleClear"
+                  circle
+                />
+              </el-tooltip>
             </template>
           </div>
-          <div style="display: flex; align-items: center;">
-            <iframe src="https://ghbtns.com/github-btn.html?user=sscfaith&repo=avue-form-design&type=star&count=true"
-                    frameborder="0"
-                    scrolling="0"
-                    width="100"
-                    height="20"
-                    title="GitHub"
-                    style="margin-left: 10px;"
-                    v-if="showGithubStar"></iframe>
+          <div style="display: flex; align-items: center">
             <slot name="toolbar-left"></slot>
-            <el-button v-if="toolbar.includes('avue-doc')"
-                       type="text"
-                       size="medium"
-                       icon="el-icon-document"
-                       @click="handleAvueDoc">Avue文档</el-button>
-            <el-button v-if="toolbar.includes('import')"
-                       type="text"
-                       size="medium"
-                       icon="el-icon-upload2"
-                       @click="importJsonVisible = true">导入JSON</el-button>
-            <el-button v-if="toolbar.includes('generate')"
-                       type="text"
-                       size="medium"
-                       icon="el-icon-download"
-                       @click="handleGenerateJson">生成JSON</el-button>
-            <el-button v-if="toolbar.includes('preview')"
-                       type="text"
-                       size="medium"
-                       icon="el-icon-view"
-                       @click="handlePreview">预览</el-button>
-            <el-button v-if="toolbar.includes('clear')"
-                       class="danger"
-                       type="text"
-                       size="medium"
-                       icon="el-icon-delete"
-                       @click="handleClear">清空</el-button>
+            <el-tooltip
+              v-if="toolbar.includes('import')"
+              class="item"
+              effect="dark"
+              content="导入JSON"
+              placement="top-start"
+            >
+              <el-button
+                type="success"
+                size="mini"
+                icon="el-icon-upload2"
+                @click="importJsonVisible = true"
+                circle
+              />
+            </el-tooltip>
+            <el-tooltip
+              v-if="toolbar.includes('preview')"
+              class="item"
+              effect="dark"
+              content="预览"
+              placement="top-start"
+            >
+              <el-button
+                type="warning"
+                size="mini"
+                icon="el-icon-view"
+                @click="handlePreview"
+                circle
+              />
+            </el-tooltip>
+            <el-tooltip
+              v-if="toolbar.includes('generate')"
+              class="item"
+              effect="dark"
+              content="保存"
+              placement="top-start"
+            >
+              <el-button
+                type="primary"
+                size="mini"
+                icon="el-icon-camera"
+                @click="handleGenerateJson"
+                circle
+              />
+            </el-tooltip>
             <slot name="toolbar"></slot>
           </div>
         </el-header>
-        <el-main :style="{background: widgetForm.column.length == 0 ? `url(${widgetEmpty}) no-repeat 50%`: ''}">
-          <widget-form ref="widgetForm"
-                       :data="widgetForm"
-                       :select.sync="widgetFormSelect"
-                       @change="handleHistoryChange(widgetForm)"></widget-form>
+        <el-main
+          :style="{
+            background:
+              widgetForm.column.length == 0
+                ? `url(${widgetEmpty}) no-repeat 50%`
+                : ''
+          }"
+        >
+          <widget-form
+            ref="widgetForm"
+            :data="widgetForm"
+            :select.sync="widgetFormSelect"
+            @change="handleHistoryChange(widgetForm)"
+          ></widget-form>
         </el-main>
       </el-container>
       <!-- 右侧配置 -->
-      <el-aside class="widget-config-container"
-                :width="rightWidth">
-        <el-tabs v-model="configTab"
-                 stretch>
-          <el-tab-pane label="字段属性"
-                       name="widget"
-                       style="padding: 0 10px;">
-            <widget-config :data="widgetFormSelect"
-                           :default-values="defaultValues"></widget-config>
+      <el-aside class="widget-config-container" :width="rightWidth">
+        <el-tabs v-model="configTab" stretch>
+          <el-tab-pane label="字段属性" name="widget" style="padding: 0 10px">
+            <widget-config
+              :data="widgetFormSelect"
+              :default-values="defaultValues"
+            ></widget-config>
           </el-tab-pane>
-          <el-tab-pane label="表单属性"
-                       name="form"
-                       lazy
-                       style="padding: 0 10px;">
+          <el-tab-pane
+            label="表单属性"
+            name="form"
+            lazy
+            style="padding: 0 10px"
+          >
             <form-config :data="widgetForm"></form-config>
           </el-tab-pane>
         </el-tabs>
       </el-aside>
       <!-- 弹窗 -->
       <!-- 导入JSON -->
-      <el-drawer title="导入JSON"
-                 :visible.sync="importJsonVisible"
-                 size="50%"
-                 append-to-body
-                 destroy-on-close>
-        <monaco-editor v-model="importJson"
-                       keyIndex="import"
-                       height="82%"></monaco-editor>
+      <el-drawer
+        title="导入JSON"
+        :visible.sync="importJsonVisible"
+        size="50%"
+        append-to-body
+        destroy-on-close
+      >
+        <monaco-editor
+          v-model="importJson"
+          keyIndex="import"
+          height="82%"
+        ></monaco-editor>
         <div class="afd-drawer-foot">
-          <el-button size="medium"
-                     type="primary"
-                     @click="handleImportJsonSubmit">确定</el-button>
-          <el-button size="medium"
-                     type="danger"
-                     @click="importJsonVisible = false">取消</el-button>
+          <el-button
+            size="medium"
+            type="primary"
+            @click="handleImportJsonSubmit"
+            >确定</el-button
+          >
+          <el-button
+            size="medium"
+            type="danger"
+            @click="importJsonVisible = false"
+            >取消</el-button
+          >
         </div>
       </el-drawer>
       <!-- 生成JSON -->
-      <el-drawer title="生成JSON"
-                 :visible.sync="generateJsonVisible"
-                 size="50%"
-                 append-to-body
-                 destroy-on-close>
-        <monaco-editor v-model="option"
-                       keyIndex="generate"
-                       height="82%"
-                       :read-only="true"></monaco-editor>
+      <el-drawer
+        title="生成JSON"
+        :visible.sync="generateJsonVisible"
+        size="50%"
+        append-to-body
+        destroy-on-close
+      >
+        <monaco-editor
+          v-model="option"
+          keyIndex="generate"
+          height="82%"
+          :read-only="true"
+        ></monaco-editor>
         <div class="afd-drawer-foot">
-          <el-button size="medium"
-                     type="primary"
-                     @click="handleGenerate">生成</el-button>
+          <el-button size="medium" type="primary" @click="handleGenerate"
+            >生成</el-button
+          >
 
-          <el-popover placement="top"
-                      trigger="hover"
-                      width="350px">
-            <el-form v-model="configOption"
-                     style="padding: 0 20px"
-                     label-suffix="："
-                     label-width="180px"
-                     label-position="left">
+          <el-popover placement="top" trigger="hover" width="350px">
+            <el-form
+              v-model="configOption"
+              style="padding: 0 20px"
+              label-suffix="："
+              label-width="180px"
+              label-position="left"
+            >
               <el-form-item label="类型">
-                <el-popover placement="top-start"
-                            trigger="hover"
-                            content="复制json对象"
-                            style="margin-right: 15px;">
-                  <el-radio slot="reference"
-                            v-model="configOption.generateType"
-                            label="json">json</el-radio>
+                <el-popover
+                  placement="top-start"
+                  trigger="hover"
+                  content="复制json对象"
+                  style="margin-right: 15px"
+                >
+                  <el-radio
+                    slot="reference"
+                    v-model="configOption.generateType"
+                    label="json"
+                    >json</el-radio
+                  >
                 </el-popover>
-                <el-popover placement="top-start"
-                            trigger="hover"
-                            content="复制string字符串，可直接用于后端保存无需再次处理。">
-                  <el-radio slot="reference"
-                            v-model="configOption.generateType"
-                            label="string">string</el-radio>
+                <el-popover
+                  placement="top-start"
+                  trigger="hover"
+                  content="复制string字符串，可直接用于后端保存无需再次处理。"
+                >
+                  <el-radio
+                    slot="reference"
+                    v-model="configOption.generateType"
+                    label="string"
+                    >string</el-radio
+                  >
                 </el-popover>
               </el-form-item>
               <el-form-item label="缩进长度-空格数量">
-                <el-slider v-model="configOption.space"
-                           show-stops
-                           :marks="{ 1: '1', 2: '2', 3: '3', 4: '4' }"
-                           :min="1"
-                           :max="4"
-                           :step="1"></el-slider>
+                <el-slider
+                  v-model="configOption.space"
+                  show-stops
+                  :marks="{ 1: '1', 2: '2', 3: '3', 4: '4' }"
+                  :min="1"
+                  :max="4"
+                  :step="1"
+                ></el-slider>
               </el-form-item>
               <el-form-item label="引号类型">
-                <el-switch v-model="configOption.quoteType"
-                           active-value="single"
-                           inactive-value="double"
-                           active-text="单引号"
-                           inactive-text="双引号"></el-switch>
+                <el-switch
+                  v-model="configOption.quoteType"
+                  active-value="single"
+                  inactive-value="double"
+                  active-text="单引号"
+                  inactive-text="双引号"
+                ></el-switch>
               </el-form-item>
               <el-form-item label="移除key的引号">
                 <el-switch v-model="configOption.dropQuotesOnKeys"></el-switch>
               </el-form-item>
               <el-form-item label="移除数字字符串的引号">
-                <el-switch v-model="configOption.dropQuotesOnNumbers"></el-switch>
+                <el-switch
+                  v-model="configOption.dropQuotesOnNumbers"
+                ></el-switch>
               </el-form-item>
             </el-form>
-            <el-button size="medium"
-                       type="primary"
-                       @click="handleCopy"
-                       slot="reference"
-                       style="margin-left: 10px;">复制</el-button>
+            <el-button
+              size="medium"
+              type="primary"
+              @click="handleCopy"
+              slot="reference"
+              style="margin-left: 10px"
+              >复制</el-button
+            >
           </el-popover>
         </div>
       </el-drawer>
       <!-- 预览 -->
-      <el-drawer title="预览"
-                 :visible.sync="previewVisible"
-                 size="60%"
-                 append-to-body
-                 :before-close="handleBeforeClose">
-        <avue-form v-if="previewVisible"
-                   ref="form"
-                   class="afd-preview-form"
-                   :option="option"
-                   v-model="form"
-                   @submit="handlePreviewSubmit"></avue-form>
+      <el-drawer
+        title="预览"
+        :visible.sync="previewVisible"
+        size="60%"
+        append-to-body
+        :before-close="handleBeforeClose"
+      >
+        <avue-form
+          v-if="previewVisible"
+          ref="form"
+          class="afd-preview-form"
+          :option="option"
+          v-model="form"
+          @submit="handlePreviewSubmit"
+        ></avue-form>
         <div class="afd-drawer-foot">
-          <el-button size="medium"
-                     type="primary"
-                     @click="handlePreviewSubmit">确定</el-button>
-          <el-button size="medium"
-                     type="danger"
-                     @click="handleBeforeClose">取消</el-button>
+          <el-button size="medium" type="primary" @click="handlePreviewSubmit"
+            >确定</el-button
+          >
+          <el-button size="medium" type="danger" @click="handleBeforeClose"
+            >取消</el-button
+          >
         </div>
       </el-drawer>
     </el-container>
@@ -302,7 +414,7 @@ import FormConfig from './FormConfig'
 import WidgetConfig from './WidgetConfig'
 
 export default {
-  name: "FormDesign",
+  name: 'FormDesign',
   components: { Draggable, MonacoEditor, WidgetForm, FormConfig, WidgetConfig },
   mixins: [history],
   props: {
@@ -326,10 +438,6 @@ export default {
       type: [String, Number],
       default: '380px'
     },
-    showGithubStar: {
-      type: Boolean,
-      default: true
-    },
     toolbar: {
       type: Array,
       default: () => {
@@ -344,8 +452,8 @@ export default {
       type: Array,
       default: () => {
         const arr = []
-        fields.forEach(f => {
-          f.list.forEach(c => {
+        fields.forEach((f) => {
+          f.list.forEach((c) => {
             arr.push(c.type)
           })
         })
@@ -354,10 +462,11 @@ export default {
     },
     customFields: {
       type: Array,
+      default: () => []
     },
     defaultValues: {
       type: Object
-    },
+    }
   },
   watch: {
     options: {
@@ -371,7 +480,7 @@ export default {
             options = { column: [] }
           }
         }
-        this.transAvueOptionsToFormDesigner(options).then(res => {
+        this.transAvueOptionsToFormDesigner(options).then((res) => {
           this.widgetForm = { ...this.widgetForm, ...res }
         })
       },
@@ -382,7 +491,7 @@ export default {
         if (this.configTab == 'form') this.configTab = 'widget'
       },
       deep: true
-    },
+    }
   },
   computed: {
     leftWidth() {
@@ -434,7 +543,7 @@ export default {
       history: {
         index: 0, // 当前下标
         maxStep: 20, // 最大记录步数
-        steps: [], // 历史步数
+        steps: [] // 历史步数
       }
     }
   },
@@ -458,24 +567,39 @@ export default {
       this.widgetForm = this.initHistory({
         index: 0,
         maxStep: 20,
-        steps: [await this.transAvueOptionsToFormDesigner({ ...this.widgetForm, ...options })],
+        steps: [
+          await this.transAvueOptionsToFormDesigner({
+            ...this.widgetForm,
+            ...options
+          })
+        ],
         storage: this.storage
       })
 
       if (this.undoRedo) {
-        window.addEventListener('keydown', (evt) => {
-          // 监听 cmd + z / ctrl + z 撤销
-          if ((evt.metaKey && !evt.shiftKey && evt.keyCode == 90) || (evt.ctrlKey && !evt.shiftKey && evt.keyCode == 90)) {
-            this.widgetForm = this.handleUndo()
-          }
+        window.addEventListener(
+          'keydown',
+          (evt) => {
+            // 监听 cmd + z / ctrl + z 撤销
+            if (
+              (evt.metaKey && !evt.shiftKey && evt.keyCode == 90) ||
+              (evt.ctrlKey && !evt.shiftKey && evt.keyCode == 90)
+            ) {
+              this.widgetForm = this.handleUndo()
+            }
 
-          // 监听 cmd + shift + z / ctrl + shift + z / ctrl + y 重做
-          if ((evt.metaKey && evt.shiftKey && evt.keyCode == 90) || (evt.ctrlKey && evt.shiftKey && evt.keyCode == 90) || (evt.ctrlKey && evt.keyCode == 89)) {
-            this.widgetForm = this.handleRedo()
-          }
-        }, false)
+            // 监听 cmd + shift + z / ctrl + shift + z / ctrl + y 重做
+            if (
+              (evt.metaKey && evt.shiftKey && evt.keyCode == 90) ||
+              (evt.ctrlKey && evt.shiftKey && evt.keyCode == 90) ||
+              (evt.ctrlKey && evt.keyCode == 89)
+            ) {
+              this.widgetForm = this.handleRedo()
+            }
+          },
+          false
+        )
       }
-
     },
     // 加载icon
     handleLoadCss() {
@@ -493,7 +617,10 @@ export default {
     },
     // 左侧字段点击
     handleFieldClick(item) {
-      const activeIndex = this.widgetForm.column.findIndex(c => c.prop == this.widgetFormSelect.prop) + 1
+      const activeIndex =
+        this.widgetForm.column.findIndex(
+          (c) => c.prop == this.widgetFormSelect.prop
+        ) + 1
       let newIndex = 0
       if (activeIndex == -1) {
         this.widgetForm.column.push(item)
@@ -507,73 +634,97 @@ export default {
     },
     // 预览 - 弹窗
     handlePreview() {
-      if (!this.widgetForm.column || this.widgetForm.column.length == 0) this.$message.error("没有需要展示的内容")
+      if (!this.widgetForm.column || this.widgetForm.column.length == 0)
+        this.$message.error('没有需要展示的内容')
       else {
-        this.transformToAvueOptions(this.widgetForm, true).then(data => {
+        this.transformToAvueOptions(this.widgetForm, true).then((data) => {
           this.option = data
           this.previewVisible = true
         })
       }
     },
+    // 外部导入 json
+    importor(data) {
+      this.importJson = data
+      this.handleImportJsonSubmit()
+    },
     // 导入JSON - 弹窗 - 确定
     handleImportJsonSubmit() {
       try {
-        this.transAvueOptionsToFormDesigner(this.importJson).then(res => {
-          this.widgetForm = res
+        this.transAvueOptionsToFormDesigner(this.importJson).then((res) => {
+          if (res && res.column) {
+            this.widgetForm = res
+            this.handleHistoryChange(this.widgetForm)
+          }
           this.importJsonVisible = false
-          this.handleHistoryChange(this.widgetForm)
         })
       } catch (e) {
         this.$message.error(e.message)
       }
     },
-    // 生成JSON - 弹窗
+    // 保存
     handleGenerateJson() {
-      this.transformToAvueOptions(this.widgetForm).then(data => {
-        this.option = data
-        this.generateJsonVisible = true
+      this.$confirm('确认保存当前表单吗？').then(() => {
+        this.transformToAvueOptions(this.widgetForm).then((data) => {
+          this.option = data
+          this.$emit('submit', data)
+        })
       })
     },
     // 生成JSON - 弹窗 - 确定
     handleGenerate() {
-      this.transformToAvueOptions(this.widgetForm).then(data => {
-        if (this.configOption.generateType && this.configOption.generateType == 'string') this.$emit('submit', beautifier(data, {
-          minify: true,
-          ...this.configOption
-        }))
+      this.transformToAvueOptions(this.widgetForm).then((data) => {
+        if (
+          this.configOption.generateType &&
+          this.configOption.generateType == 'string'
+        )
+          this.$emit(
+            'submit',
+            beautifier(data, {
+              minify: true,
+              ...this.configOption
+            })
+          )
         else this.$emit('submit', data)
       })
     },
     // 生成JSON - 弹窗 - 拷贝
     handleCopy() {
-      this.transformToAvueOptions(this.widgetForm).then(data => {
+      this.transformToAvueOptions(this.widgetForm).then((data) => {
         this.$Clipboard({
           text: beautifier(data, {
             minify: true,
             ...this.configOption
           })
-        }).then(() => {
-          this.$message.success('复制成功')
-        }).catch(() => {
-          this.$message.error('复制失败')
         })
+          .then(() => {
+            this.$message.success('复制成功')
+          })
+          .catch(() => {
+            this.$message.error('复制失败')
+          })
       })
     },
     // 预览 - 弹窗 - 确定
     handlePreviewSubmit(form, done) {
       if (done) {
-        this.$alert(this.form).then(() => {
-          done()
-        }).catch(() => {
-          done()
-        })
-      } else {
-        this.$refs.form.validate((valid, done) => {
-          if (valid) this.$alert(this.form).then(() => {
-            done()
-          }).catch(() => {
+        this.$alert(this.form)
+          .then(() => {
             done()
           })
+          .catch(() => {
+            done()
+          })
+      } else {
+        this.$refs.form.validate((valid, done) => {
+          if (valid)
+            this.$alert(this.form)
+              .then(() => {
+                done()
+              })
+              .catch(() => {
+                done()
+              })
         })
       }
     },
@@ -585,17 +736,22 @@ export default {
     },
     // 清空
     handleClear() {
-      if (this.widgetForm && this.widgetForm.column && this.widgetForm.column.length > 0) {
+      if (
+        this.widgetForm &&
+        this.widgetForm.column &&
+        this.widgetForm.column.length > 0
+      ) {
         this.$confirm('确定要清空吗？', '警告', {
           type: 'warning'
-        }).then(() => {
-          this.$set(this.widgetForm, 'column', [])
-          this.$set(this, 'form', {})
-          this.$set(this, 'widgetFormSelect', {})
-          this.handleHistoryChange(this.widgetForm)
-        }).catch(() => {
         })
-      } else this.$message.error("没有需要清空的内容")
+          .then(() => {
+            this.$set(this.widgetForm, 'column', [])
+            this.$set(this, 'form', {})
+            this.$set(this, 'widgetFormSelect', {})
+            this.handleHistoryChange(this.widgetForm)
+          })
+          .catch(() => {})
+      } else this.$message.error('没有需要清空的内容')
     },
     // 表单设计器配置项 转化为 Avue配置项
     transformToAvueOptions(obj, isPreview = false) {
@@ -609,22 +765,37 @@ export default {
           for (let i = 0; i < data.column.length; i++) {
             const col = data.column[i]
 
-            if (isPreview) { // 预览调整事件中的this指向
+            if (isPreview) {
+              // 预览调整事件中的this指向
               let event = ['change', 'blur', 'click', 'focus']
-              event.forEach(e => {
-                if (col[e]) col[e] = eval((col[e] + '').replace(/this/g, '_this'))
+              event.forEach((e) => {
+                if (col[e])
+                  col[e] = eval((col[e] + '').replace(/this/g, '_this'))
               })
-              if (col.event) Object.keys(col.event).forEach(key => col.event[key] = eval((col.event[key] + '').replace(/this/g, '_this')))
+              if (col.event)
+                Object.keys(col.event).forEach(
+                  (key) =>
+                    (col.event[key] = eval(
+                      (col.event[key] + '').replace(/this/g, '_this')
+                    ))
+                )
             }
 
-            if (col.type == 'dynamic' && col.children && col.children.column && col.children.column.length > 0) {
-              const c = col.children.column;
-              c.forEach(item => {
+            if (
+              col.type == 'dynamic' &&
+              col.children &&
+              col.children.column &&
+              col.children.column.length > 0
+            ) {
+              const c = col.children.column
+              c.forEach((item) => {
                 delete item.subfield
               })
-              this.transformToAvueOptions(col.children, isPreview).then(res => {
-                col.children = res
-              })
+              this.transformToAvueOptions(col.children, isPreview).then(
+                (res) => {
+                  col.children = res
+                }
+              )
             } else if (col.type == 'group') {
               if (!data.group) data.group = []
 
@@ -636,20 +807,26 @@ export default {
                 collapse: col.collapse,
                 display: col.display
               }
-              this.transformToAvueOptions(col.children, isPreview).then(res => {
-                group.column = res.column
-                data.group.push(group)
-              })
+              this.transformToAvueOptions(col.children, isPreview).then(
+                (res) => {
+                  group.column = res.column
+                  data.group.push(group)
+                }
+              )
               data.column.splice(i, 1)
               i--
-            } else if (['checkbox', 'radio', 'tree', 'cascader', 'select'].includes(col.type)) {
+            } else if (
+              ['checkbox', 'radio', 'tree', 'cascader', 'select'].includes(
+                col.type
+              )
+            ) {
               if (col.dicOption == 'static') {
                 delete col.dicUrl
                 delete col.dicMethod
                 delete col.dicQuery
                 delete col.dicQueryConfig
                 const { label, value, desc } = col.props
-                col.dicData.forEach(d => {
+                col.dicData.forEach((d) => {
                   if (d.label) {
                     const val = d.label
                     delete d.label
@@ -670,7 +847,7 @@ export default {
                 delete col.dicData
                 if (col.dicQueryConfig && col.dicQueryConfig.length > 0) {
                   const query = {}
-                  col.dicQueryConfig.forEach(q => {
+                  col.dicQueryConfig.forEach((q) => {
                     if (q.key && q.value) query[q.key] = q.value
                   })
                   col.dicQuery = query
@@ -681,7 +858,7 @@ export default {
             } else if (['upload'].includes(col.type)) {
               if (col.headersConfig && col.headersConfig.length > 0) {
                 const headers = {}
-                col.headersConfig.forEach(h => {
+                col.headersConfig.forEach((h) => {
                   if (h.key && h.value) headers[h.key] = h.value
                 })
                 col.headers = headers
@@ -690,7 +867,7 @@ export default {
 
               if (col.dataConfig && col.dataConfig.length > 0) {
                 const data = {}
-                col.dataConfig.forEach(h => {
+                col.dataConfig.forEach((h) => {
                   if (h.key && h.value) data[h.key] = h.value
                 })
                 col.data = data
@@ -714,17 +891,32 @@ export default {
       return new Promise((resolve, reject) => {
         try {
           if (data.column && data.column.length > 0) {
-            data.column.forEach(col => {
-              if (col.type == 'dynamic' && col.children && col.children.column && col.children.column.length > 0) {
-                const c = col.children.column;
-                c.forEach(item => {
+            data.column.forEach((col) => {
+              if (
+                col.type == 'dynamic' &&
+                col.children &&
+                col.children.column &&
+                col.children.column.length > 0
+              ) {
+                const c = col.children.column
+                c.forEach((item) => {
                   item.subfield = true
                 })
-                this.transAvueOptionsToFormDesigner(col.children).then(res => {
-                  col.children = res
-                })
-              } else if (['checkbox', 'radio', 'tree', 'cascader', 'select'].includes(col.type)) {
-                if (!col.dicData && col.dicQuery && typeof col.dicQuery == 'object') {
+                this.transAvueOptionsToFormDesigner(col.children).then(
+                  (res) => {
+                    col.children = res
+                  }
+                )
+              } else if (
+                ['checkbox', 'radio', 'tree', 'cascader', 'select'].includes(
+                  col.type
+                )
+              ) {
+                if (
+                  !col.dicData &&
+                  col.dicQuery &&
+                  typeof col.dicQuery == 'object'
+                ) {
                   const arr = []
                   for (let key in col.dicQuery) {
                     arr.push({
@@ -739,7 +931,7 @@ export default {
                 else col.dicOption = 'static'
                 if (!col.dicData) col.dicData = []
                 else if (col.props) {
-                  col.dicData.forEach(d => {
+                  col.dicData.forEach((d) => {
                     const { label, value, desc } = col.props
                     if (label) {
                       const val = d[label]
@@ -799,7 +991,7 @@ export default {
                 collapse: col.collapse,
                 display: col.display
               }
-              this.transAvueOptionsToFormDesigner(col).then(res => {
+              this.transAvueOptionsToFormDesigner(col).then((res) => {
                 group.children = res
                 data.column.push(group)
               })
@@ -813,23 +1005,26 @@ export default {
       })
     },
     async getData(type = 'json', option = {}) {
-      if (type == 'string') return beautifier(await this.transformToAvueOptions(this.widgetForm), {
-        minify: true,
-        ...option
-      })
+      if (type == 'string')
+        return beautifier(await this.transformToAvueOptions(this.widgetForm), {
+          minify: true,
+          ...option
+        })
       else if (type == 'app') {
         const option = await this.transformToAvueOptions(this.widgetForm)
         this.parseJson(option)
         return option
-      }
-      else return await this.transformToAvueOptions(this.widgetForm)
+      } else return await this.transformToAvueOptions(this.widgetForm)
     },
     parseJson(jsonObj) {
       // 循环所有键
       for (var key in jsonObj) {
         //如果对象类型为object类型且数组长度大于0 或者 是对象 ，继续递归解析
         var element = jsonObj[key]
-        if (element && element.length > 0 && typeof (element) == "object" || typeof (element) == "object") {
+        if (
+          (element && element.length > 0 && typeof element == 'object') ||
+          typeof element == 'object'
+        ) {
           this.parseJson(element)
         } else if (typeof element == 'function') {
           jsonObj[key] = element + ''
